@@ -744,7 +744,7 @@ static int imx477_probe(struct i2c_client *client,
 		return err;
 	}
 
-	dev_dbg(dev, "detected imx477 sensor\n");
+	dev_info(dev, "detected imx477 sensor new version 1 \n");
 
 	return 0;
 }
