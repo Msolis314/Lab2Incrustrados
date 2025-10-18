@@ -521,6 +521,7 @@ done:
 	return err;
 }
 
+int flipi;
 static struct camera_common_pdata *imx477_parse_dt(struct tegracam_device
 						   *tc_dev)
 {
@@ -571,7 +572,8 @@ static struct camera_common_pdata *imx477_parse_dt(struct tegracam_device
 			"assume sensor powered independently\n");
 
 	board_priv_pdata->has_eeprom = of_property_read_bool(np, "has-eeprom");
-
+	flipi = of_property_read_bool(np, "flip");
+	
 	return board_priv_pdata;
 
 error:
@@ -595,8 +597,15 @@ static int imx477_set_mode(struct tegracam_device *tc_dev)
 
 	err = imx477_write_table(priv, mode_table[s_data->mode]);
 	if (err)
+	
 		return err;
 
+	if (flipi) {
+		imx477_write_reg(s_data,0x0101,0x02);
+		pr_info("Confirmar flipi\n");
+	} else { 
+		imx477_write_reg(s_data,0x0101,0x00);
+	}
 	return 0;
 }
 
